@@ -1,0 +1,616 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+:root {
+  --primary-color-start: #e74c3c;
+  --primary-color-end: #c0392b;
+  --background-gradient: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  --machine-bg: #1a1a2e;
+  --reel-bg: #000000;
+  --text-light: #ecf0f1;
+  --text-dark: #2c3e50;
+  --text-highlight: #ffffff;
+  --coin-color: #f1c40f;
+  --lever-color: #bdc3c7;
+  --lever-handle-color: #e74c3c;
+  --payline-color: red;
+  --button-bg: linear-gradient(
+    135deg,
+    var(--primary-color-start) 0%,
+    var(--primary-color-end) 100%
+  );
+  --button-hover-bg: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+  --button-disabled-bg: #7f8c8d;
+  --input-bg: #2c3e50;
+  --input-border: #7f8c8d;
+  --win-color: #2ecc71;
+  --lose-color: var(--text-light);
+  --error-color: #f39c12;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --popup-bg: #23233b;
+  --popup-border: #474787;
+  --action-button-bg: linear-gradient(
+    135deg,
+    var(--primary-color-start) 0%,
+    var(--primary-color-end) 100%
+  );
+  --action-button-hover-opacity: 0.9;
+  --action-button-shadow: rgba(118, 75, 162, 0.4);
+  --info-icon-color: #3498db; /* Blue for info icon */
+
+  /* Icon Colors */
+  --icon-lemon: #f1c40f;
+  --icon-bell: #f39c12;
+  --icon-seedling: #2ecc71;
+  --icon-smile: #e74c3c; /* Example color for smile */
+  --icon-star: #ffffff;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--background-gradient);
+  color: var(--text-light);
+  padding: 15px;
+  overflow-x: hidden;
+}
+
+.game-wrapper {
+  background-color: var(--machine-bg);
+  padding: 25px 30px;
+  border-radius: 15px;
+  box-shadow: 0 15px 40px var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 700px;
+  border: 3px solid #444;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--text-highlight);
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.info-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Center items vertically */
+  width: 100%;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  flex-wrap: wrap; /* Allow wrapping */
+  gap: 10px; /* Add gap if wrapped */
+}
+
+.balance i {
+  color: var(--coin-color);
+  margin-right: 5px;
+}
+
+#balance-amount {
+  color: var(--coin-color);
+  font-weight: 700;
+}
+
+#current-bet-amount {
+  font-weight: 700;
+}
+
+.slot-area {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: center;
+  margin-bottom: 25px;
+  gap: 20px;
+}
+
+.slot-machine {
+  background-color: #111;
+  border: 5px solid #555;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+  flex-grow: 1;
+  max-width: 500px;
+}
+
+.reels-container {
+  display: flex;
+  justify-content: space-around;
+  background-color: var(--reel-bg);
+  height: 180px;
+  overflow: hidden;
+  position: relative;
+  border-radius: 5px;
+  border: 2px solid #333;
+}
+
+.reel {
+  width: 32%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--reel-bg);
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.reel-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.reel-inner .icon-container {
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.8rem;
+  line-height: 60px;
+}
+
+.reel-inner i[data-name="lemon"] {
+  color: var(--icon-lemon);
+}
+.reel-inner i[data-name="bell"] {
+  color: var(--icon-bell);
+}
+.reel-inner i[data-name="seedling"] {
+  color: var(--icon-seedling);
+}
+.reel-inner i[data-name="smile"] {
+  color: var(--icon-smile);
+}
+.reel-inner i[data-name="star"] {
+  color: var(--icon-star);
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+}
+
+.payline {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--payline-color);
+  transform: translateY(-50%);
+  z-index: 5;
+  box-shadow: 0 0 5px var(--payline-color);
+}
+
+.lever-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  width: 60px;
+}
+
+.lever-base {
+  width: 30px;
+  height: 20px;
+  background-color: #444;
+  border-radius: 3px;
+  margin-bottom: -5px;
+  z-index: 1;
+}
+
+.lever {
+  width: 12px;
+  height: 130px;
+  background-color: var(--lever-color);
+  border-radius: 6px;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  transform-origin: bottom center;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.lever-handle {
+  width: 35px;
+  height: 35px;
+  background-color: var(--lever-handle-color);
+  border-radius: 50%;
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.lever.pulling {
+  transform: rotate(40deg);
+}
+
+.controls-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.bet-label-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.controls-area label {
+  font-weight: 500;
+}
+
+.info-icon {
+  color: var(--info-icon-color);
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: color 0.2s ease;
+}
+.info-icon:hover {
+  color: var(--text-highlight);
+}
+
+.bet-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bet-controls button {
+  width: 35px;
+  height: 35px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 50%;
+  background: var(--button-bg);
+  color: var(--text-light);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.bet-controls button:hover {
+  background: var(--button-hover-bg);
+}
+.bet-controls button:disabled {
+  background: var(--button-disabled-bg);
+  cursor: not-allowed;
+}
+
+.controls-area input[type="number"] {
+  width: 100px;
+  padding: 8px 12px;
+  font-size: 1rem;
+  text-align: center;
+  border: 1px solid var(--input-border);
+  background-color: var(--input-bg);
+  color: var(--text-light);
+  border-radius: 5px;
+  outline: none;
+  -moz-appearance: textfield;
+}
+.controls-area input[type="number"]::-webkit-outer-spin-button,
+.controls-area input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#spin-button {
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-light);
+  background: var(--button-bg);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+#spin-button i {
+  margin-left: 8px;
+  transition: transform 0.5s ease;
+}
+#spin-button:hover {
+  background: var(--button-hover-bg);
+  transform: translateY(-2px);
+}
+#spin-button:disabled {
+  background: var(--button-disabled-bg);
+  cursor: not-allowed;
+  transform: translateY(0);
+}
+#spin-button:disabled i {
+  transform: rotate(0deg);
+}
+#spin-button.spinning i {
+  transform: rotate(360deg);
+}
+
+.message-area {
+  margin-top: 15px;
+  min-height: 1.5em;
+  width: 100%;
+  text-align: center;
+}
+
+#result-message {
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+#result-message.win {
+  color: var(--win-color);
+}
+#result-message.lose {
+  color: var(--lose-color);
+}
+#result-message.error {
+  color: var(--error-color);
+}
+
+/* --- Popup Styles --- */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--overlay-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+  opacity: 0; /* Start hidden */
+  pointer-events: none; /* Don't block clicks when hidden */
+  transition: opacity 0.3s ease;
+}
+.popup-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.popup-box {
+  background-color: var(--popup-bg, #23233b);
+  padding: 30px 40px;
+  border-radius: 15px;
+  text-align: center;
+  border: 1px solid var(--popup-border, #474787);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  position: relative;
+  color: var(--text-light);
+  max-width: 90%;
+  width: 450px; /* Slightly wider for rules */
+  transform: scale(0.9); /* Start slightly smaller */
+  transition: transform 0.3s ease;
+}
+.popup-overlay.show .popup-box {
+  transform: scale(1); /* Scale in when shown */
+}
+
+.popup-box h2 {
+  color: var(--text-highlight);
+  font-size: 1.8rem;
+  margin-bottom: 20px; /* More space */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+#jackpot-overlay h2 {
+  color: var(--coin-color);
+}
+.popup-box h2 .fa-crown,
+.popup-box h2 .fa-book-open {
+  margin: 0 10px;
+}
+
+.popup-box p {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.popup-box .reward {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--win-color);
+  margin-top: 15px;
+}
+
+.close-popup {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--text-light);
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+.close-popup:hover {
+  opacity: 1;
+}
+
+/* Rules List Specific Styles */
+.rules-box ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+  text-align: left;
+}
+.rules-box li {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Space between icons and text */
+  font-size: 1rem;
+}
+.rules-box li i {
+  margin: 0 2px; /* Small space between icons */
+  font-size: 1.3rem; /* Slightly larger icons in rules */
+  width: 20px; /* Ensure alignment */
+  text-align: center;
+}
+/* Assign colors to icons in rules list */
+.rules-box li i.fa-star {
+  color: var(--icon-star);
+}
+.rules-box li i.fa-lemon {
+  color: var(--icon-lemon);
+}
+.rules-box li i.fa-bell {
+  color: var(--icon-bell);
+}
+.rules-box li i.fa-seedling {
+  color: var(--icon-seedling);
+}
+.rules-box li i.fa-face-smile {
+  color: var(--icon-smile);
+}
+
+@media (max-width: 700px) {
+  h1 {
+    font-size: 2rem;
+  }
+  .info-bar {
+    font-size: 0.9rem;
+    flex-direction: column;
+    gap: 5px;
+    text-align: center;
+  }
+  .slot-area {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .lever-container {
+    order: -1;
+    padding-top: 0;
+    flex-direction: row;
+    width: auto;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  .lever {
+    height: 80px;
+    width: 10px;
+  }
+  .lever-handle {
+    width: 25px;
+    height: 25px;
+    top: -10px;
+  }
+  .lever-base {
+    width: 20px;
+    height: 15px;
+    margin-bottom: 0;
+    margin-right: -3px;
+  }
+  .reels-container {
+    height: 180px;
+  }
+  .reel-inner .icon-container {
+    height: 60px;
+    font-size: 2.5rem;
+    line-height: 60px;
+  }
+  .controls-area {
+    gap: 12px;
+  }
+  #spin-button {
+    font-size: 1rem;
+    padding: 10px 25px;
+  }
+  #result-message {
+    font-size: 1rem;
+  }
+  .popup-box {
+    width: 400px;
+  }
+}
+
+@media (max-width: 450px) {
+  .game-wrapper {
+    padding: 20px;
+  }
+  h1 {
+    font-size: 1.8rem;
+  }
+  .info-bar {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+  .reels-container {
+    height: 150px;
+  }
+  .reel-inner .icon-container {
+    height: 50px;
+    font-size: 2.2rem;
+    line-height: 50px;
+  }
+  .lever-container {
+    margin-bottom: 10px;
+  }
+  .bet-controls input[type="number"] {
+    width: 80px;
+  }
+  .bet-controls button {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
+  #spin-button {
+    font-size: 0.9rem;
+    padding: 9px 20px;
+  }
+  #result-message {
+    font-size: 0.9rem;
+  }
+  .popup-box {
+    padding: 20px 25px;
+    width: 90%;
+  }
+  .popup-box h2 {
+    font-size: 1.6rem;
+  }
+  .popup-box p {
+    font-size: 1rem;
+  }
+  .popup-box .reward {
+    font-size: 1.1rem;
+  }
+  .rules-box li {
+    font-size: 0.9rem;
+    gap: 10px;
+  }
+  .rules-box li i {
+    font-size: 1.1rem;
+    width: 18px;
+  }
+  .close-popup {
+    font-size: 1.5rem;
+    top: 8px;
+    right: 12px;
+  }
+}

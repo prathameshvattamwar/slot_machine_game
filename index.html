@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slot Machine Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-wrapper">
+        <h1>Slot Machine</h1>
+
+        <div class="info-bar">
+            <div class="balance">
+                <i class="fas fa-coins"></i> Balance: <span id="balance-amount">1000</span> Rs
+            </div>
+            <div class="current-bet-display">
+                Bet: <span id="current-bet-amount">10</span> Rs
+            </div>
+        </div>
+
+        <div class="slot-area">
+            <div class="slot-machine">
+                <div class="reels-container">
+                    <div class="reel">
+                        <div class="reel-inner" id="reel1"></div>
+                    </div>
+                    <div class="reel">
+                        <div class="reel-inner" id="reel2"></div>
+                    </div>
+                    <div class="reel">
+                        <div class="reel-inner" id="reel3"></div>
+                    </div>
+                    <div class="payline"></div>
+                </div>
+            </div>
+            <div class="lever-container">
+                <div class="lever-base"></div>
+                <div class="lever" id="lever">
+                    <div class="lever-handle"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="controls-area">
+             <div class="bet-label-container">
+                <label for="bet-input">Bet Amount:</label>
+                <i class="fas fa-info-circle info-icon" id="info-icon"></i>
+            </div>
+             <div class="bet-controls">
+                <button id="decrease-bet">-</button>
+                <input type="number" id="bet-input" value="10" min="10" step="10">
+                <button id="increase-bet">+</button>
+            </div>
+            <button id="spin-button">Spin <i class="fas fa-sync-alt"></i></button>
+        </div>
+
+        <div class="message-area">
+            <p id="result-message"></p>
+        </div>
+
+         <div class="popup-overlay" id="jackpot-overlay" style="display: none;">
+             <div class="popup-box jackpot-box">
+                 <span class="close-popup" id="close-jackpot">×</span>
+                 <h2><i class="fas fa-crown"></i> JACKPOT! <i class="fas fa-crown"></i></h2>
+                 <p>You hit Triple Stars!</p>
+                 <p class="reward">You win 1000 Rs!</p>
+             </div>
+         </div>
+
+         <div class="popup-overlay" id="rules-overlay" style="display: none;">
+             <div class="popup-box rules-box">
+                 <span class="close-popup" id="close-rules">×</span>
+                 <h2><i class="fas fa-book-open"></i> Game Rules <i class="fas fa-book-open"></i></h2>
+                 <ul>
+                     <li><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> : Wins 1000 Rs (Jackpot!)</li>
+                     <li><i class="fas fa-lemon"></i><i class="fas fa-lemon"></i><i class="fas fa-lemon"></i> : Wins 3x Your Bet</li>
+                     <li><i class="fas fa-bell"></i><i class="fas fa-bell"></i><i class="fas fa-bell"></i> : Wins 3x Your Bet</li>
+                     <li><i class="fas fa-seedling"></i><i class="fas fa-seedling"></i><i class="fas fa-seedling"></i> : Wins 3x Your Bet</li>
+                     <li><i class="fa-solid fa-face-smile"></i><i class="fa-solid fa-face-smile"></i><i class="fa-solid fa-face-smile"></i> : Wins 3x Your Bet</li>
+                     <li>Any other combination: No Win</li>
+                 </ul>
+             </div>
+         </div>
+
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
